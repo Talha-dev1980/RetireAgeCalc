@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Planner</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons (piggy bank, checkmark, trophy) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <!-- Chart.js Annotation Plugin (Optional, for retirement age line on charts) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body class="bg-light">
+    <!-- Main application container -->
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+
+        <!-- Page: Landing Page -->
+        <section id="landing-page" class="d-flex flex-column align-items-center justify-content-center text-center flex-grow-1 p-3 active-page">
+            <div class="mb-3">
+                <img src="images/RetirementCalculator.png" alt="logo" class="img-fluid rounded-4 shadow-sm" style="max-width: 75px;">
+                <h1 class="h5 fw-bold mt-2 text-primary-dark">Retirement Planner</h1>
+            </div>
+            <h2 class="display-6 fw-bold text-primary-dark mb-3">Calculate Your Retirement in 3 Minutes</h2>
+            <p class="lead-sm text-secondary-dark mb-4 col-md-8 col-lg-6">Discover when you can retire or how much you need to invest for your dream retirement age</p>
+            <div class="mb-4">
+                <!-- Placeholder image for the beach scene -->
+                <img src="images/cover.png" alt="Person relaxing on a beach" class="img-fluid rounded-4 shadow-sm" style="max-width: 350px;">
+            </div>
+            <button id="start-planning-btn" class="btn btn-primary btn-lg rounded-pill px-5 py-3 mb-3 shadow">Start Planning</button>
+            <div class="text-secondary-dark small mt-2">
+                <p class="mb-1"><i class="fas fa-check-circle me-2 text-success"></i>No signup required</p>
+                <p class="mb-1"><i class="fas fa-check-circle me-2 text-success"></i>Personalized calculations</p>
+                <p class="mb-0"><i class="fas fa-check-circle me-2 text-success"></i>Free PDF report for download</p>
+            </div>
+        </section>
+
+        <!-- Page: Step 1 - About You -->
+        <section id="step-1-page" class="d-none flex-column flex-grow-1 p-3">
+            <header class="text-center py-4 mb-4">
+                <h1 class="h5 fw-bold text-primary-dark">Retirement Planner</h1>
+            </header>
+            <div class="container d-flex flex-column align-items-center flex-grow-1">
+                <div class="progress-container w-100 mb-4 px-3" style="max-width: 600px;">
+                    <div class="text-start mb-2 text-secondary-dark small">Step 1 of 3</div>
+                    <div class="progress rounded-pill bg-light-orange" style="height: 8px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <div class="card p-4 shadow-sm rounded-4 col-12 col-md-8 col-lg-6 mx-auto">
+                    <div class="card-body">
+                        <h3 class="card-title fw-bold mb-2 text-primary-dark">About You</h3>
+                        <p class="card-text text-secondary-dark mb-3">Let's start with some basic information</p>
+
+                        <div class="mb-3">
+                            <label for="current-age" class="form-label fw-medium text-primary-dark">What's your current age?</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="current-age" placeholder="e.g., 30" required>
+                             <div class="invalid-feedback">Please enter your current age.</div>
+                            <small class="form-text text-muted">This helps us calculate your investment timeline</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="target-retirement-age" class="form-label fw-medium text-primary-dark">What's your target retirement age?</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="target-retirement-age" placeholder="e.g., 65" required>
+                             <div class="invalid-feedback">Please enter a valid target retirement age (must be greater than current age).</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-0">
+                            <span class="fw-medium text-primary-dark">Do you have a target retirement age in mind?</span>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="target-age-toggle" role="switch" checked>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between w-100 mt-4 mb-3 px-3" style="max-width: 600px;">
+                    <button id="back-step-1-btn" class="btn btn-link text-decoration-none text-secondary-dark fw-bold">Back</button>
+                    <button id="next-step-1-btn" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow">Next</button>
+                </div>
+                 <div id="step1-message" class="alert alert-danger mt-3 d-none text-center rounded-3" role="alert"></div>
+            </div>
+        </section>
+
+        <!-- Page: Step 2 - Your Investments -->
+        <section id="step-2-page" class="d-none flex-column flex-grow-1 p-3">
+            <header class="text-center py-4 mb-4">
+                <h1 class="h5 fw-bold text-primary-dark">Retirement Planner</h1>
+            </header>
+            <div class="container d-flex flex-column align-items-center flex-grow-1">
+                <div class="progress-container w-100 mb-4 px-3" style="max-width: 600px;">
+                    <div class="text-start mb-2 text-secondary-dark small">Step 2 of 3</div>
+                    <div class="progress rounded-pill bg-light-orange" style="height: 8px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%;" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <div class="card p-4 shadow-sm rounded-4 col-12 col-md-8 col-lg-6 mx-auto">
+                    <div class="card-body">
+                        <h3 class="card-title fw-bold mb-2 text-primary-dark">Your Investments</h3>
+                        <p class="card-text text-secondary-dark mb-3">Please add your investment plan</p>
+
+                        <div class="mb-3">
+                            <label for="lump-sum-amount" class="form-label fw-medium text-primary-dark">What amount you have for Lumpsum? (₹)</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="lump-sum-amount" placeholder="e.g., 50000" required>
+                             <div class="invalid-feedback">Please enter a valid lump sum amount (non-negative).</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="monthly-investment" class="form-label fw-medium text-primary-dark">How much can you invest monthly? (₹)</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="monthly-investment" placeholder="e.g., 500" required>
+                             <div class="invalid-feedback">Please enter a valid monthly investment (non-negative).</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="annual-increase" class="form-label fw-medium text-primary-dark">How much can you increase your monthly investments annually? (%)</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="annual-increase" placeholder="e.g., 5" required>
+                            <div class="invalid-feedback">Please enter a valid annual increase (0-100%).</div>
+                            <small class="form-text text-muted">Enter as a percentage (e.g., 5 for 5%)</small>
+                        </div>
+                         <!-- New field for Expected Return Rate for Scenario B -->
+                        <div class="mb-0" id="expected-return-rate-group" style="display: none;">
+                            <label for="expected-return-rate" class="form-label fw-medium text-primary-dark">Expected Annual Return Rate (%)</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="expected-return-rate" placeholder="e.g., 7.5" step="0.1">
+                            <div class="invalid-feedback">Please enter a valid expected return rate (e.g., 7.5).</div>
+                            <small class="form-text text-muted">Used if you don't have a target retirement age.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between w-100 mt-4 mb-3 px-3" style="max-width: 600px;">
+                    <button id="back-step-2-btn" class="btn btn-link text-decoration-none text-secondary-dark fw-bold">Back</button>
+                    <button id="next-step-2-btn" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow">Next</button>
+                </div>
+                 <div id="step2-message" class="alert alert-danger mt-3 d-none text-center rounded-3" role="alert"></div>
+            </div>
+        </section>
+
+        <!-- Page: Step 3 - Your Retirement Needs -->
+        <section id="step-3-page" class="d-none flex-column flex-grow-1 p-3">
+            <header class="text-center py-4 mb-4">
+                <h1 class="h5 fw-bold text-primary-dark">Retirement Planner</h1>
+            </header>
+            <div class="container d-flex flex-column align-items-center flex-grow-1">
+                <div class="progress-container w-100 mb-4 px-3" style="max-width: 600px;">
+                    <div class="text-start mb-2 text-secondary-dark small">Step 3 of 3</div>
+                    <div class="progress rounded-pill bg-light-orange" style="height: 8px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <div class="card p-4 shadow-sm rounded-4 col-12 col-md-8 col-lg-6 mx-auto">
+                    <div class="card-body">
+                        <h3 class="card-title fw-bold mb-2 text-primary-dark">Your Retirement Needs</h3>
+                        <p class="card-text text-secondary-dark mb-3">Tell us about your expected expenses in retirement</p>
+
+                        <div class="mb-3">
+                            <label for="monthly-retirement-expenses" class="form-label fw-medium text-primary-dark">Monthly expenses you expect in retirement (today's value)? (₹)</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="monthly-retirement-expenses" placeholder="e.g., 2000" required>
+                             <div class="invalid-feedback">Please enter your expected monthly retirement expenses.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="major-expense-type" class="form-label fw-medium text-primary-dark">What's your biggest retirement expense? (Optional)</label>
+                            <select class="form-select rounded-3 p-3" id="major-expense-type">
+                                <option value="">Select an expense</option>
+                                <option value="Child's Education">Child's Education</option>
+                                <option value="House Purchase">House Purchase</option>
+                                <option value="Marriage">Marriage</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="major-expense-amount" class="form-label fw-medium text-primary-dark">Amount for this expense? (₹)</label>
+                                <input type="number" class="form-control rounded-3 p-3" id="major-expense-amount" placeholder="e.g., 50000" disabled>
+                                 <div class="invalid-feedback">Please enter a valid amount for the major expense.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="major-expense-age" class="form-label fw-medium text-primary-dark">Expected age for this expense?</label>
+                                <input type="number" class="form-control rounded-3 p-3" id="major-expense-age" placeholder="e.g., 55" disabled>
+                                 <div class="invalid-feedback">Please enter a valid age for the major expense.</div>
+                            </div>
+                        </div>
+                        <!-- New field for Inflation Rate -->
+                        <div class="mb-3">
+                            <label for="inflation-rate" class="form-label fw-medium text-primary-dark">Inflation Rate (%)</label>
+                            <input type="number" class="form-control rounded-3 p-3" id="inflation-rate" placeholder="e.g., 6.0" step="0.1" required>
+                            <div class="invalid-feedback">Please enter a valid inflation rate.</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between w-100 mt-4 mb-3 px-3" style="max-width: 600px;">
+                    <button id="back-step-3-btn" class="btn btn-link text-decoration-none text-secondary-dark fw-bold">Back</button>
+                    <button id="next-step-3-btn" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow">Calculate</button>
+                </div>
+                <div id="step3-message" class="alert alert-danger mt-3 d-none text-center rounded-3" role="alert"></div>
+            </div>
+        </section>
+
+        <!-- Page: Universal Dashboard (Scenario A & B) -->
+        <section id="dashboard-page" class="d-none flex-column flex-grow-1 p-3 text-center">
+            <header class="py-4 mb-3">
+                <i class="fas fa-trophy fa-3x text-success mb-3"></i>
+                <h2 class="display-5 fw-bold text-primary-dark mb-3">You can retire at age <span id="dashboard-retirement-age-display-header">[X]</span>!</h2>
+                <p class="lead text-secondary-dark" id="dashboard-header-message">Based on your investment plan, here's when financial freedom awaits</p>
+            </header>
+
+            <div class="container flex-grow-1">
+                <!-- Results Cards (Grid Layout) -->
+                <div class="row gx-4 gy-4 mb-3 justify-content-center">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card p-4 shadow-sm rounded-4 h-100 dashboard-card">
+                            <h4 class="card-title display-6 fw-bold text-primary-dark" id="dashboard-retirement-age-card">[X]</h4>
+                            <p class="card-text text-secondary-dark small" id="dashboard-retirement-age-label">Your retirement age</p>
+                            <small class="text-muted" id="dashboard-retirement-age-subtext">Based on your investment capacity</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card p-4 shadow-sm rounded-4 h-100 dashboard-card">
+                            <h4 class="card-title display-6 fw-bold text-primary-dark" id="dashboard-years-to-retirement-card">[X]</h4>
+                            <p class="card-text text-secondary-dark small" id="dashboard-years-to-retirement-label">Time until retirement</p>
+                            <small class="text-muted" id="dashboard-years-to-retirement-subtext">From today</small>
+                        </div>
+                    </div>
+                     <!-- New Card for Investment Growth Percentage -->
+                     <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card p-4 shadow-sm rounded-4 h-100 dashboard-card">
+                            <h4 class="card-title display-6 fw-bold text-primary-dark" id="dashboard-return-rate-card">[X]%</h4>
+                            <p class="card-text text-secondary-dark small" id="dashboard-return-rate-label">Investment Growth Rate</p>
+                            <small class="text-muted" id="dashboard-return-rate-subtext"></small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card p-4 shadow-sm rounded-4 h-100 dashboard-card">
+                            <div>
+                                <h4 class="card-title display-6 fw-bold text-primary-dark" id="dashboard-monthly-income-card">₹[Amount]</h4>
+                                <p class="card-text text-secondary-dark small" id="dashboard-monthly-income-label">Monthly income in retirement</p>
+                            </div>
+                            <small class="text-muted" id="dashboard-monthly-income-subtext">Inflation-adjusted purchasing power</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card p-4 shadow-sm rounded-4 h-100 dashboard-card">
+                            <h4 class="card-title display-6 fw-bold text-primary-dark" id="dashboard-money-duration-card">[X] Years</h4>
+                            <p class="card-text text-secondary-dark small" id="dashboard-money-duration-label">Your money will last until age</p>
+                            <small class="text-muted" id="dashboard-money-duration-subtext">Covering all planned expenses</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investment Timeline Visualization -->
+                <div class="card p-4 shadow-sm rounded-4 mb-3">
+                    <h5 class="fw-bold text-primary-dark mb-3">Investment Timeline</h5>
+                    <div id="dashboard-timeline-viz" class="timeline-placeholder">
+                        <div class="timeline-marker start">Current Age <br> (<span id="timeline-current-age"></span>)</div>
+                        <div class="timeline-line flex-grow-1 mx-2"></div>
+                        <div class="timeline-marker retirement">Retirement Age <br> (<span id="timeline-retirement-age"></span>)</div>
+                        <div class="timeline-line flex-grow-1 mx-2"></div>
+                        <div class="timeline-marker end">Money Lasts Until <br> (<span id="timeline-money-lasts"></span>)</div>
+                    </div>
+                </div>
+
+                <!-- Corpus Growth Chart -->
+                <div class="card p-4 shadow-sm rounded-4 mb-3 chart-container" style="height: 400px;">
+                    <h5 class="fw-bold text-primary-dark mb-3">Corpus Growth Over Time</h5>
+                    <canvas id="dashboard-corpus-growth-chart"></canvas>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-statement bg-primary-light p-4 rounded-4 shadow-sm text-center text-primary-dark mb-3 w-100" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <p class="mb-2 fw-bold h5" id="dashboard-summary-message">Summary: Your plan is being calculated...</p>
+                </div>
+
+                <!-- Encouraging Metrics -->
+                <div class="d-flex flex-wrap justify-content-center gap-3 mb-3" id="dashboard-encouraging-metrics">
+                    <span class="badge rounded-pill bg-success-light text-success p-3 fw-bold"><i class="fas fa-check-circle me-2"></i>Comfortable lifestyle maintained</span>
+                    <span class="badge rounded-pill bg-success-light text-success p-3 fw-bold"><i class="fas fa-check-circle me-2"></i>All major expenses covered</span>
+                    <span class="badge rounded-pill bg-success-light text-success p-3 fw-bold"><i class="fas fa-check-circle me-2"></i>Buffer for unexpected costs</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center w-100 mt-3 mb-3 px-3">
+                <button id="see-detailed-breakdown-btn" class="btn btn-primary btn-lg rounded-pill px-5 py-3 mb-3 mb-md-0 me-md-3 shadow">See Year-by-Year Breakdown</button>
+                <button id="generate-report-btn-dashboard" class="btn btn-outline-secondary btn-lg rounded-pill px-5 py-3 mb-3 mb-md-0 me-md-3 shadow">Generate Report</button>
+                <button id="adjust-my-plan-btn" class="btn btn-link text-decoration-none text-secondary-dark fw-bold px-5 py-3">Adjust My Plan</button>
+            </div>
+        </section>
+
+
+        <!-- Page: Detailed Projections -->
+        <section id="projections-page" class="d-none flex-column flex-grow-1 p-3">
+            <header class="text-center py-4 mb-3">
+                <h2 class="display-6 fw-bold text-primary-dark">Your Retirement Timeline</h2>
+                <p class="lead text-secondary-dark">Here's how your investments will grow over time</p>
+            </header>
+
+            <div class="container flex-grow-1">
+                <!-- Summary Card -->
+                <div class="card p-4 shadow-sm rounded-4 mb-3 text-center">
+                    <div class="row text-primary-dark fw-bold">
+                        <div class="col-12 col-md-3 mb-3 mb-md-0">
+                            <div class="h5" id="proj-total-corpus">[Amount]</div>
+                            <div class="small text-secondary-dark">Corpus at retirement</div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 mb-md-0">
+                            <div class="h5" id="proj-monthly-income">[Amount]</div>
+                            <div class="small text-secondary-dark">Monthly income</div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 mb-md-0">
+                            <div class="h5" id="proj-years-last">[X] years</div>
+                            <div class="small text-secondary-dark">Money will last</div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="h5" id="proj-growth-rate">[X]%</div>
+                            <div class="small text-secondary-dark">Investment growth rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projections Chart -->
+                <div class="card p-4 shadow-sm rounded-4 mb-3 chart-container" style="height: 400px;">
+                    <h5 class="fw-bold text-primary-dark mb-3">Corpus Growth Over Time</h5>
+                    <canvas id="projections-chart"></canvas>
+                </div>
+
+                <!-- Projections Table -->
+                <div class="card p-4 shadow-sm rounded-4 mb-3 table-responsive-wrapper">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover rounded-3 overflow-hidden" id="projections-table">
+                            <thead class="bg-primary text-white sticky-header">
+                                <tr>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Investment Corpus</th>
+                                    <th scope="col">Major Expenses</th>
+                                    <th scope="col">Remaining Balance</th>
+                                    <th scope="col">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projections-table-body">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="projections-message" class="alert alert-danger mt-3 d-none text-center rounded-3" role="alert"></div>
+            </div>
+
+            <!-- Action Buttons Section -->
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center w-100 mt-3 mb-3 px-3">
+                <button id="generate-report-btn-projections" class="btn btn-primary btn-lg rounded-pill px-5 py-3 mb-3 mb-md-0 me-md-3 shadow">Generate Report</button>
+                <button id="back-projections-btn" class="btn btn-outline-secondary btn-lg rounded-pill px-5 py-3">Back to Dashboard</button>
+            </div>
+        </section>
+
+        <!-- Download Report Section (Modal-like behavior) -->
+        <div id="download-report-section" class="d-none fixed-top vh-100 vw-100 d-flex justify-content-center align-items-center" style="background-color: rgba(0,0,0,0.5); z-index: 1050;">
+            <div class="bg-white rounded-4 p-4 shadow-lg mx-auto" style="max-width: 400px; width: 90%;">
+                <h5 class="fw-bold text-primary-dark mb-3">Download Your Report</h5>
+                <p class="text-secondary-dark mb-3">Enter your email to download the generated PDF report.</p>
+                <div class="mb-3">
+                    <input type="email" class="form-control rounded-3 p-3" id="download-email-input" placeholder="Enter your email" required>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+                <div id="download-message" class="alert alert-info mt-3 d-none text-center rounded-3" role="alert"></div>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button id="cancel-download-btn" class="btn btn-outline-secondary rounded-pill px-4 py-2">Cancel</button>
+                    <button id="confirm-download-btn" class="btn btn-primary rounded-pill px-4 py-2">Download Report</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Bootstrap JS (bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

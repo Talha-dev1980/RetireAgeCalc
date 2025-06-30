@@ -1,0 +1,23 @@
+you have made really good screens description. but i want to start 
+with MVP and minimize the screen number and features. 
+for that we must focus on retiremnet age calculator in which 
+it is quite flexible that if a user enter the retirment age or not. 
+if not then calculations make and tell the user how long user will
+ need to invest and save for getting retired  this 
+calculation will made baased on lumpsum investment and increase 
+in investment percentage and also inflation.
+if user enter the desired retiremnt age then calculate how much user should invest and gain incremnt rate 
+to get retireed at the desrired age.
+these screens after welcom screen must be shown as walkthrough minimal design to make it really user 
+friendly and not so much stuff like they are in cocpit and have so much controls. lol
+ 
+1. Landing/Welcome Screen
+2. Personal Information Screen
+3. Investment Setup Screen
+5. Retirement Expenses Screen
+6. Major Life Events Screen
+7. Results Dashboard Screen
+8. Detailed Projections Screen
+
+all the reports must be sent as pdf on email user provide.
+.

@@ -1,0 +1,303 @@
+/* Custom CSS for Retirement Planner */
+
+/* Font Family */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F8F8F8; /* Light gray background */
+    color: #333; /* Default text color */
+}
+
+/* Custom Colors (based on UI images) */
+:root {
+    --primary-color: #FF7B5B; /* Orange */
+    --primary-dark-color: #333333; /* Dark text for headings */
+    --secondary-dark-color: #666666; /* Lighter dark text for descriptions */
+    --success-color: #28a745; /* Green for checkmarks */
+    --success-light-color: #e0ffe0; /* Light green for success badge background */
+    --light-orange: #ffe0d5; /* Lighter orange for progress bar background */
+    --danger-color: #dc3545; /* Red for depleted balance */
+    --warning-color: #ffc107; /* Yellow for caution balance */
+    --info-color: #0dcaf0; /* Blue for info alerts */
+    --primary-light-color: #FFF2ED; /* Very light orange for summary box in scenario B */
+}
+
+.text-primary-dark { color: var(--primary-dark-color); }
+.text-secondary-dark { color: var(--secondary-dark-color); }
+.bg-primary { background-color: var(--primary-color) !important; }
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #e66a4f; /* Slightly darker orange on hover */
+    border-color: #e66a4f;
+}
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+.bg-success-light { background-color: var(--success-light-color); }
+.text-success { color: var(--success-color) !important; }
+.bg-light-orange { background-color: var(--light-orange); }
+.bg-primary-light { background-color: var(--primary-light-color); } /* New for Scenario B summary */
+.bg-danger-light { background-color: #fcebeb; } /* Light red for danger states */
+.text-danger { color: var(--danger-color) !important; }
+
+/* Landing Page Specific Styles */
+#landing-page {
+    background-color: #F8F8F8;
+    padding: 3rem 1rem !important; /* Reduced padding */
+}
+
+/* Smaller lead text for landing page */
+.lead-sm {
+    font-size: 1.1rem; /* Slightly smaller than default lead */
+}
+
+
+/* Page sections */
+.d-none { /* Ensure Bootstrap's d-none is standard */
+    display: none !important;
+}
+/* No longer need .active-page to force display flex, d-none removal will make it d-flex */
+
+/* Adjust padding for Step pages to reduce gaps */
+#step-1-page, #step-2-page, #step-3-page,
+#results-page, #scenario-b-dashboard-page, #projections-page {
+    padding: 2rem 1rem !important; /* Reduced padding for all main content pages */
+}
+
+/* Reduce default margin-bottom for elements within cards across all steps */
+.card-body .mb-3 {
+    margin-bottom: 0.75rem !important; /* Roughly 12px, reduced from Bootstrap default 16px */
+}
+.card-body .mb-4 {
+    margin-bottom: 1rem !important; /* Roughly 16px, reduced from Bootstrap default 24px */
+}
+
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 1.5rem; /* Rounded corners for cards */
+    padding: 1.5rem;
+    background-color: #FFFFFF;
+}
+
+/* Form Control Styling */
+.form-control {
+    border-radius: 0.75rem; /* Rounded corners for input fields */
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6; /* Light border */
+}
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(255, 123, 91, 0.25);
+}
+.form-control.is-invalid {
+    border-color: var(--danger-color);
+}
+.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+
+/* Form Check Switch (Toggle) */
+.form-switch .form-check-input {
+    width: 3em; /* Wider switch */
+    height: 1.5em; /* Taller switch */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23666'/%3e%3c/svg%3e"); /* Default grey circle */
+    border-color: #ccc;
+    transition: background-position 0.15s ease-in-out;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e"); /* White circle when checked */
+}
+
+/* Progress Bar Styling */
+.progress {
+    height: 8px; /* Slimmer progress bar */
+    border-radius: 10px;
+    background-color: var(--light-orange);
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* Results Dashboard Styling */
+.summary-statement {
+    background-color: #FFFFFF;
+    border: 1px solid #eee;
+}
+
+/* Projections Page Specific Styles */
+#projections-page .chart-container {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table-responsive-wrapper {
+    max-width: 900px; /* Max width for table wrapper */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#projections-table {
+    min-width: 600px; /* Ensure horizontal scroll on smaller screens */
+    width: 100%;
+}
+
+#projections-table thead.sticky-header th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--primary-color); /* Ensure header sticks and has background */
+}
+
+#projections-table tbody tr:hover {
+    background-color: #f5f5f5; /* Subtle hover effect */
+}
+
+/* Table row highlighting */
+.row-retirement-age {
+    background-color: var(--light-orange) !important; /* Distinct background for retirement age */
+    font-weight: bold;
+}
+
+.row-major-expense {
+    background-color: var(--info-color) !important; /* Highlight for major expenses */
+    color: white; /* Ensure text is readable */
+}
+
+/* Color-coded balance */
+.balance-healthy {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.balance-caution {
+    color: var(--warning-color);
+    font-weight: bold;
+}
+
+.balance-depleted {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* Modal styling (for the custom download section) */
+#download-report-section { /* Corrected ID */
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent overlay */
+}
+#download-report-section .modal-content { /* Re-purposing name for modal-like behavior */
+    border-radius: 1rem;
+}
+
+
+/* Scenario B Dashboard Specific Styles */
+#scenario-b-dashboard-page .dashboard-b-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#scenario-b-dashboard-page .dashboard-b-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.timeline-placeholder {
+    height: 80px; /* Adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    border-radius: 0.75rem;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+    position: relative; /* For markers positioning */
+}
+
+.timeline-line {
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.timeline-marker {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-align: center;
+    min-width: 100px;
+}
+
+.timeline-marker.start { background-color: #6c757d; } /* Grey for current age */
+.timeline-marker.retirement { background-color: var(--success-color); } /* Green for retirement */
+.timeline-marker.end { background-color: var(--info-color); } /* Blue for money lasts until */
+
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .display-5 { /* Original display-5 remains */
+        font-size: 2.5rem;
+    }
+    .display-6 { /* Added for the landing page headline */
+        font-size: 2rem;
+    }
+    .lead { /* Original lead remains */
+        font-size: 1rem;
+    }
+    .lead-sm { /* For landing page lead text */
+        font-size: 0.9rem;
+    }
+    .btn-lg {
+        padding: 0.8rem 2.5rem;
+        font-size: 1rem;
+    }
+
+    /* Stack buttons on small screens for results and projections page */
+    #results-page .d-flex.flex-column.flex-md-row,
+    #projections-page .d-flex.flex-column.flex-md-row,
+    #scenario-b-dashboard-page .d-flex.flex-column.flex-md-row {
+        flex-direction: column !important;
+    }
+    #results-page .d-flex.flex-column.flex-md-row .btn,
+    #projections-page .d-flex.flex-column.flex-md-row .btn,
+    #scenario-b-dashboard-page .d-flex.flex-column.flex-md-row .btn {
+        width: 100%;
+        margin-right: 0 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Table responsive adjustments */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Scenario B timeline vertical on mobile (conceptual) */
+    #scenario-b-dashboard-page .timeline-placeholder {
+        flex-direction: column;
+        height: auto;
+        padding: 1.5rem 1rem;
+    }
+
+    #scenario-b-dashboard-page .timeline-line {
+        width: 4px;
+        height: 50px; /* Vertical line length */
+        margin: 1rem 0;
+    }
+}

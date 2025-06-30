@@ -1,0 +1,127 @@
+// HTML Structure
+const dashboard = `
+<div class="dashboard">
+    <header class="header">
+        <div class="success-icon">✔️</div>
+        <h1>Here's what you need to retire at age [X]</h1>
+        <h2>Based on your inputs, here's your personalized retirement plan</h2>
+    </header>
+    <main class="results-grid">
+        <div class="card investment-card">
+            <h3>₹[Amount]</h3>
+            <p>Monthly investment needed</p>
+            <small>Starting from your current amount</small>
+        </div>
+        <div class="card increase-card">
+            <h3>[X]%</h3>
+            <p>Yearly increase required</p>
+            <small>To keep up with inflation and goals</small>
+        </div>
+        <div class="card corpus-card">
+            <h3>₹[Amount]</h3>
+            <p>Total retirement corpus</p>
+            <small>At age [retirement age]</small>
+        </div>
+        <div class="card feasibility-card">
+            <div class="status-badge green">Achievable ✔️</div>
+            <div class="status-badge yellow">Challenging ⚠️</div>
+            <div class="status-badge red">Unrealistic ❗</div>
+            <p>Brief explanation text based on status</p>
+        </div>
+    </main>
+    <section class="visualization">
+        <canvas id="investmentChart"></canvas>
+    </section>
+    <div class="summary-box">
+        <p>Invest ₹[X] monthly, increase by [Y]% yearly, retire comfortably at [age]</p>
+    </div>
+    <div class="action-buttons">
+        <button class="btn primary">See Detailed Breakdown</button>
+        <button class="btn secondary">Email My Report</button>
+        <button class="btn tertiary">Start Over</button>
+    </div>
+</div>
+`;
+
+// CSS Styles
+<style>
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+.header {
+    text-align: center;
+}
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+.investment-card, .increase-card, .corpus-card {
+    font-size: 2em;
+}
+.status-badge {
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+.green { background: green; }
+.yellow { background: yellow; color: black; }
+.red { background: red; }
+.visualization {
+    margin: 20px 0;
+}
+.summary-box {
+    background: #f0f8ff;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.primary { background: blue; color: white; }
+.secondary { background: gray; color: white; }
+.tertiary { background: lightgray; color: black; }
+
+</style><script>
+// JavaScript for Chart.js
+const ctx = document.getElementById('investmentChart').getContext('2d');
+const investmentChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Current Age', 'Retirement Age'],
+        datasets: [{
+            label: 'Corpus Growth',
+            data: [0, 1000000], // Example data
+            borderColor: 'blue',
+            fill: false,
+        }]
+    },
+    options: {
+        responsive: true,
+        tooltips: {
+            enabled: true,
+        },
+        scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom'
+            }]
+        }
+    }
+});
+</script>
