@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM Content Loaded - script.js is running.');
 
     // --- API Base URL ---
-    const BASE_URL = 'http://dotdev.alwaysdata.net'; // Updated base URL
+    const BASE_URL = 'https://dotdev.alwaysdata.net'; // Changed from http to https
 
     // --- UI Element Selectors ---
     const landingPage = document.getElementById('landing-page');
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userData = {
         CurrentAge: 0,
         RetirementAge: 0, // Target retirement age for Scenario A
-        hasTargetAge: true, // True for Scenario A, False for Scenario B
+        hasTargetAge: true, // True if user chose Scenario A initially
         LumpSumInvestment: 0,
         MonthlySIP: 0,
         SIPEscalationRate: 0,
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
             expectedReturnRateGroup.style.display = 'block';
             expectedReturnRateInput.setAttribute('required', 'required');
             // Populate with user data or default if coming from a different scenario
-            expectedReturnRateInput.value = userData.ExpectedReturnRate || 7.0;
+            expectedReturnRateInput.value = userData.ExpectedReturnRate || 7.0; // Use stored user input or default
         }
     };
 
@@ -271,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
      * Handles API calls for both Scenario A and B calculations and updates UI for the unified dashboard.
      */
     const handleDashboardDisplay = async () => {
-        // Decide which API to call and how to interpret results based on hasTargetAge
         const apiEndpoint = userData.hasTargetAge ? '/api/calculate-retirement-a' : '/api/calculate-retirement-b';
         let inputs = {};
 
@@ -312,7 +311,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // If data is not fresh, make API call
         console.log(`Initiating API call to ${BASE_URL}${apiEndpoint} due to missing/stale data...`);
         showMessage(dashboardSummaryMessage, 'Calculating your plan... Please wait.', 'info');
 
@@ -375,20 +373,19 @@ document.addEventListener('DOMContentLoaded', () => {
             // Card 5: Years Money Will Last
             dashboardMoneyDurationCard.textContent = data.yearsMoneyWillLast === 0 ? 'N/A' : `${data.yearsMoneyWillLast} Years`;
             dashboardMoneyDurationLabel.textContent = "Years Money Will Last";
-            // FIX: Changed !data.isAchievability to !data.isAchievable
             dashboardMoneyDurationSubtext.textContent = `Until age ${data.moneyWillLastUntilAge}. ${data.isAchievable ? 'Your plan is on track.' : 'Requires adjustment.'}`;
-            if (!data.isAchievable) { // Corrected property name
+            if (!data.isAchievable) {
                  dashboardMoneyDurationSubtext.classList.add('text-danger');
-                 dashboardPage.querySelector('.fa-trophy')?.classList.replace('fa-trophy', 'fa-exclamation-triangle').classList.remove('text-success').classList.add('text-danger'); // Change icon and color
+                 dashboardPage.querySelector('.fa-trophy')?.classList.replace('fa-trophy', 'fa-exclamation-triangle').classList.remove('text-success').classList.add('text-danger');
                  dashboardPage.querySelector('.bg-success-light')?.classList.replace('bg-success-light', 'bg-danger-light');
                  dashboardPage.querySelector('.text-success')?.classList.replace('text-success', 'text-danger');
-                 dashboardEncouragingMetrics.classList.add('d-none'); // Hide encouraging metrics if not achievable
+                 dashboardEncouragingMetrics.classList.add('d-none');
             } else {
                  dashboardMoneyDurationSubtext.classList.remove('text-danger');
                  dashboardPage.querySelector('.fa-exclamation-triangle')?.classList.replace('fa-exclamation-triangle', 'fa-trophy').classList.remove('text-danger').classList.add('text-success');
                  dashboardPage.querySelector('.bg-danger-light')?.classList.replace('bg-danger-light', 'bg-success-light');
                  dashboardPage.querySelector('.text-danger')?.classList.replace('text-danger', 'text-success');
-                 dashboardEncouragingMetrics.classList.remove('d-none'); // Show encouraging metrics
+                 dashboardEncouragingMetrics.classList.remove('d-none');
             }
 
             timelineCurrentAge.textContent = userData.CurrentAge;
@@ -413,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dashboardYearsToRetirementSubtext.textContent = "From today";
 
             // Card 3: Expected Annual Return Rate
-            dashboardReturnRateCard.textContent = `${userData.ExpectedReturnRate.toFixed(1)}%`;
+            dashboardReturnRateCard.textContent = `${userData.ExpectedReturnRate.toFixed(1)}%`; // Use user's input for B
             dashboardReturnRateLabel.textContent = "Expected Annual Return";
             dashboardReturnRateSubtext.textContent = "Your assumed investment growth";
 
@@ -430,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dashboardPage.querySelector('.fa-exclamation-triangle')?.classList.replace('fa-exclamation-triangle', 'fa-trophy').classList.remove('text-danger').classList.add('text-success');
             dashboardPage.querySelector('.bg-danger-light')?.classList.replace('bg-danger-light', 'bg-success-light');
             dashboardPage.querySelector('.text-danger')?.classList.replace('text-danger', 'text-success');
-            dashboardEncouragingMetrics.classList.remove('d-none'); // Show encouraging metrics
+            dashboardEncouragingMetrics.classList.remove('d-none');
 
             timelineCurrentAge.textContent = userData.CurrentAge;
             timelineRetirementAge.textContent = data.calculatedRetirementAge;
@@ -623,12 +620,13 @@ document.addEventListener('DOMContentLoaded', () => {
             PlannedMajorExpenses: userData.PlannedMajorExpenses,
         };
 
+        // Use the currently active scenario's primary input for projections API
         if (userData.hasTargetAge) {
             inputsForProjections.RetirementAge = userData.RetirementAge;
-            inputsForProjections.CalculatedExpectedReturnRate = userData.summaryMetrics.calculatedExpectedReturnRate;
+            inputsForProjections.CalculatedExpectedReturnRate = userData.summaryMetrics.calculatedExpectedReturnRate; // Use the calculated rate from Scenario A
         } else {
             inputsForProjections.CalculatedRetirementAgeB = userData.summaryMetrics.calculatedRetirementAge;
-            inputsForProjections.ExpectedReturnRate = userData.ExpectedReturnRate;
+            inputsForProjections.ExpectedReturnRate = userData.ExpectedReturnRate; // Use the user's expected rate for Scenario B
         }
 
         try {
@@ -901,7 +899,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         userData.CurrentAge = currentAge;
         userData.hasTargetAge = hasTargetAge;
-        userData.RetirementAge = hasTargetAge ? targetAge : 0; // Store 0 if no target age
+        userData.RetirementAge = hasTargetAge ? targetAge : 0; // Store user's input for target age
 
         showPage(step2Page);
     });
@@ -950,11 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userData.LumpSumInvestment = lumpSum;
         userData.MonthlySIP = monthlyInvestment;
         userData.SIPEscalationRate = annualIncrease;
-        if (!userData.hasTargetAge) {
-            userData.ExpectedReturnRate = expectedReturnRate;
-        } else {
-            userData.ExpectedReturnRate = 0; // Reset if not applicable
-        }
+        userData.ExpectedReturnRate = !userData.hasTargetAge ? expectedReturnRate : 0; // Store user's input for expected return rate
 
         showPage(step3Page);
     });
@@ -1065,7 +1059,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set default values for input fields (Step 2 and 3)
     // Ensures they have initial values even if user skips input
     if (inflationRateInput) inflationRateInput.value = userData.InflationRate * 100; // Display 6.0
-    if (expectedReturnRateInput) expectedReturnRateInput.value = 7.0; // Example default for B
+    if (expectedReturnRateInput) expectedReturnRateInput.value = userData.ExpectedReturnRate || 7.0; // Use stored value or default
 
     // Initial state for major expense inputs (disabled until type is selected)
     majorExpenseAmountInput.disabled = true;
@@ -1099,9 +1093,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputsForReport = {
             email: email,
             CurrentAge: userData.CurrentAge,
+            LumpSumInvestment: userData.LumpSumInvestment,
             MonthlySIP: userData.MonthlySIP,
             SIPEscalationRate: userData.SIPEscalationRate,
-            LumpSumInvestment: userData.LumpSumInvestment,
             InflationRate: userData.InflationRate,
             PostRetirementMonthlyExpense: userData.PostRetirementMonthlyExpense,
             PlannedMajorExpenses: userData.PlannedMajorExpenses,
